@@ -8,7 +8,7 @@ const Token = artifacts.require('BitminerFactoryToken')
 const Crowdsale = artifacts.require('Crowdsale')
 
 const DECIMALS = 18
-const CAP = 1000000000000000000000 // 1000 BMF
+const CAP = 100000000000000000000000 // 100'000 BMF
 
   contract('TOKEN: expected token parameters', async (accounts) => {
     before(async () => {
