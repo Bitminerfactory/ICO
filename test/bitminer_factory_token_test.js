@@ -4,7 +4,7 @@ require('chai')
   .use(require('chai-bignumber')(BigNumber))
   .should();
 
-const Token = artifacts.require('Token')
+const Token = artifacts.require('BitminerFactoryToken')
 const Crowdsale = artifacts.require('Crowdsale')
 
 const DECIMALS = 18
