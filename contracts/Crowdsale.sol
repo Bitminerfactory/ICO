@@ -31,7 +31,7 @@ contract Crowdsale is Ownable {
     bool public isFinalized = false;
 
     modifier onlyWhileOpen {
-        require(now >=openingTime && now <= closingTime);
+        require(now >= openingTime && now <= closingTime);
         require(!isFinalized);
         _;
     }
