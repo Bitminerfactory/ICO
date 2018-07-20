@@ -1,4 +1,4 @@
-pragma solidity ^0.4.24;
+pragma solidity 0.4.24;
 
 import "../node_modules/openzeppelin-solidity/contracts/token/ERC20/StandardToken.sol";
 import "../node_modules/openzeppelin-solidity/contracts/ownership/Ownable.sol";
@@ -47,12 +47,12 @@ contract MintableToken is StandardToken, Ownable {
         address _to,
         uint256 _amount
     )
-        hasMintPermission
-        canMint
         public
+        hasMintPermission
+        canMint  
         returns (bool)
     { 
-        require(balances[_to] + _amount > balances[_to]); // Guard against overflow
+        require(balances[_to].add(_amount) > balances[_to]); // Guard against overflow
         totalSupply_ = totalSupply_.add(_amount);
         balances[_to] = balances[_to].add(_amount);
         emit Mint(_to, _amount);
@@ -64,7 +64,7 @@ contract MintableToken is StandardToken, Ownable {
    * @dev Function to stop minting new tokens.
    * @return True if the operation was successful.
    */
-    function finishMinting() hasMintPermission canMint public returns (bool) {
+    function finishMinting() public hasMintPermission canMint returns (bool) {
         mintingFinished = true;
         emit MintFinished();
         return true;

@@ -1,18 +1,12 @@
-pragma solidity ^0.4.24;
+pragma solidity 0.4.24;
 
 import "../node_modules/openzeppelin-solidity/contracts/ownership/Ownable.sol";
 
-// This contract holds a mapping of known funders with
-// a boolean flag for whitelist status
 contract Whitelist is Ownable {
     
     address public whitelister;
 
-    struct Beneficiary {
-        bool whitelisted;
-    }
-
-    mapping(address => Beneficiary) private beneficiaries;
+    mapping(address => bool) private inWhitelist;
 
     event Whitelisted(address[] funders);
     
@@ -26,14 +20,14 @@ contract Whitelist is Ownable {
         whitelister = msg.sender;
     }
 
-    function setNewWhitelister(address new_whitelister) external onlyOwner {
-        whitelister = new_whitelister;
+    function setNewWhitelister(address newWhitelister) external onlyOwner {
+        whitelister = newWhitelister;
     }
 
     // Adds funders to the whitelist in batches.
     function whitelist(address[] funders) external onlyWhitelister {
         for (uint i = 0; i < funders.length; i++) {
-            beneficiaries[funders[i]].whitelisted = true;
+            inWhitelist[funders[i]] = true;
         }
         emit Whitelisted(funders);
     }
@@ -41,12 +35,12 @@ contract Whitelist is Ownable {
     // Removes funders from the whitelist in batches.
     function unwhitelist(address[] funders) external onlyWhitelister {
         for (uint i = 0; i < funders.length; i++) {
-            beneficiaries[funders[i]].whitelisted = false;
+            inWhitelist[funders[i]] = false;
         }
     }
 
     // Used in Crowdsale to check if funder is allowed
     function isWhitelisted(address funder) external view returns (bool) {
-        return beneficiaries[funder].whitelisted;
+        return inWhitelist[funder];
     }
 }

@@ -37,15 +37,15 @@ contract('CROWDSALE: expected crowdsale parameters', async (accounts) => {
     })
 
     it('first stage rate', async () => {
-      assert.equal(await crowd.rate_one.call(), RATE_ONE)
+      assert.equal(await crowd.rateOne.call(), RATE_ONE)
     })
 
     it('second stage rate', async () => {
-      assert.equal(await crowd.rate_two.call(), RATE_TWO)
+      assert.equal(await crowd.rateTwo.call(), RATE_TWO)
     })
 
     it('third stage rate', async () => {
-      assert.equal(await crowd.rate_three.call(), RATE_THREE)
+      assert.equal(await crowd.rateThree.call(), RATE_THREE)
     })
 
     it('token contract', async () => {

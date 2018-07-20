@@ -1,4 +1,4 @@
-pragma solidity ^0.4.24;
+pragma solidity 0.4.24;
 
 import "../node_modules/openzeppelin-solidity/contracts/token/ERC20/ERC20.sol";
 import "../node_modules/openzeppelin-solidity/contracts/math/SafeMath.sol";
@@ -19,19 +19,22 @@ contract Crowdsale is Ownable {
     address public wallet;
     
     // change in wei
-    uint256 public rate_one;
-    uint256 public rate_two;
-    uint256 public rate_three;
+    uint256 public rateOne;
+    uint256 public rateTwo;
+    uint256 public rateThree;
     
     uint256 public weiRaised;
     
-    uint256 public constant openingTime = 1530256151;  // venerdì, 29 giugno 2018 09:09:11 GMT+02:00
-    uint256 public constant closingTime = 1530343554;  // sabato, 30 giugno 2018 09:25:54 GMT+02:00
+    uint256 public constant OPENING_TIME = 1532044800;  // Friday, 20 July 2018 00:00:00
+    uint256 public constant CLOSING_TIME = 1538265600;  // Sunday, 30 September 2018 00:00:00
     
+    uint256 public constant FIRST_STAGE = 1533686400;  // Wednesday, 8 August 2018 00:00:00
+    uint256 public constant SECOND_STAGE = 1537401600;  // Thursday, 20 September 2018 00:00:00
+
     bool public isFinalized = false;
 
     modifier onlyWhileOpen {
-        require(now >= openingTime && now <= closingTime);
+        require(now >= OPENING_TIME && now <= CLOSING_TIME);
         require(!isFinalized);
         _;
     }
@@ -54,24 +57,31 @@ contract Crowdsale is Ownable {
     event WhitelistAssigned(address indexed owner, address newWhitelist);
 
     /**
-    * @param _rate_one Number of token units a buyer gets per wei in the first Crowdsale phase
-    * @param _rate_two Number of token units a buyer gets per wei in the second Crowdsale phase
-    * @param _rate_three Number of token units a buyer gets per wei in the third Crowdsale phase
+    * @param _rateOne Number of token units a buyer gets per wei in the first Crowdsale phase
+    * @param _rateTwo Number of token units a buyer gets per wei in the second Crowdsale phase
+    * @param _rateThree Number of token units a buyer gets per wei in the third Crowdsale phase
     * @param _wallet Address where collected funds will be forwarded to
     * @param _tokenContract Address of the token being sold
     */
-    constructor(uint256 _rate_one, uint256 _rate_two, uint256 _rate_three, address _wallet, ERC20 _tokenContract) public {
-        require(_rate_one > 0);
-        require(_rate_two > 0);
-        require(_rate_three > 0);
+    constructor(uint256 _rateOne, uint256 _rateTwo, uint256 _rateThree, address _wallet, ERC20 _tokenContract) public {
+        require(_rateOne > 0);
+        require(_rateTwo > 0);
+        require(_rateThree > 0);
         require(_wallet != address(0));
         require(_tokenContract != address(0));
 
-        rate_one = _rate_one;
-        rate_two = _rate_two;
-        rate_three = _rate_three;
+        rateOne = _rateOne;
+        rateTwo = _rateTwo;
+        rateThree = _rateThree;
         wallet = _wallet;
         tokenContract = _tokenContract;
+    }
+
+    /**
+    * @dev fallback function ***DO NOT OVERRIDE***
+    */
+    function () external payable {
+        buyTokens(msg.sender);
     }
 
   // -----------------------------------------
@@ -86,19 +96,12 @@ contract Crowdsale is Ownable {
     /**
     * work. Calls the contract's finalization function.
     */
-    function finalize() onlyOwner external {
+    function finalize() external onlyOwner {
         require(!isFinalized);
         
         isFinalized = true;
         emit Finalized();
         
-    }
-    
-    /**
-    * @dev fallback function ***DO NOT OVERRIDE***
-    */
-    function () external payable {
-        buyTokens(msg.sender);
     }
 
     /**
@@ -192,12 +195,12 @@ contract Crowdsale is Ownable {
     function _getTokenAmount(uint256 _weiAmount)
         internal view returns (uint256)
     {
-        if (now < (openingTime + 10 minutes)) { 
-            return _weiAmount.mul(rate_one); 
-        } else if (now < (openingTime + 15 minutes)) { 
-            return _weiAmount.mul(rate_two);
+        if (now < FIRST_STAGE) { 
+            return _weiAmount.mul(rateOne); 
+        } else if (now < SECOND_STAGE) { 
+            return _weiAmount.mul(rateTwo);
         } else {
-            return _weiAmount.mul(rate_three);
+            return _weiAmount.mul(rateThree);
         }
     }
 

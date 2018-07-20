@@ -28,7 +28,7 @@ BMF have been offered at 20% discount to nominal value from 25/5/18 to 20/6/18, 
 The following discounts will apply afterwards during the ICO period: 
 
 1. 12% from 20/7/18 to 8/8/18;
-2. 6% from 20/8/18 to 20/9/18; 
+2. 6% from 8/8/18 to 20/9/18; 
 3. 0% until Hard Cap is reached. 
 
 As our Mining Farm is a scalable project, Soft-Cap is set at $0.5M and Hard Cap is set at $100m. If Soft-Cap is not met, all Mining Contracts will be cancelled and payments returned to Token Holders. 
