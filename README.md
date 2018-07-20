@@ -3,7 +3,7 @@ This repository holds the smart contracts that constitute the on-chain part of B
 
 1. **Crowdsale:** a limited time period contract that accepts purchase requests for 'BMF' tokens and handles those requests, according to the supply available.
 2. **BitminerFactoryToken:** an ERC20 contract that mints 'BMF' tokens during the sale period and can destroy tokens in the later phase, during Bitminer Factory BuyBack operations.
-3. **Whitelist:** basically a mapping of addresses to a whitelist flag. It stores the addresses of buyers that have previously registered themselves through the [Bitminer Facotry Portal](https://bitminerfactoryico.io/it/) and are allowed to participate in the Crowdsale phase.
+3. **Whitelist:** basically a mapping of addresses to a whitelist flag. It stores the addresses of buyers that have previously registered themselves through the [Bitminer Factory Portal](https://bitminerfactoryico.io/it/) and are allowed to participate in the Crowdsale phase.
 4. **BurnableToken:** a token that can be irreversibly burned (destroyed). Based on OpenZeppelin-Solidity with some changes in order to set a destroyer that could differ from owner.
 5. **MintableToken:** the 'BMF' token inherits from MintableToken and BurnableToken with some changes in order to add a batches of beneficiaries. Minters could only be the crowdsale (to be settled) and the deployer of the contract(owner).
 
